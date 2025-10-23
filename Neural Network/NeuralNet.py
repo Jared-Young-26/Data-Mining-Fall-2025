@@ -65,11 +65,11 @@ for sample, (features, output) in enumerate(zip(features, output), start=1):
         weights_2 += learning_rate * grad_2 # Output layer weight adjustment
         weights_1 += learning_rate * grad_1 # Hidden layer weight adjustment
 
-        print(f" Weights updated successfully")
+        print(f"Weights updated successfully")
     else:
-        print(f" No update (error below threshold)")
+        print(f"No update (error below threshold)")
     
-    print(f" Update W1:\n{np.round(weights_1,2)}")
+    print(f"Update W1:\n{np.round(weights_1,2)}")
     print(f"\nUpdate W2:\n{np.round(weights_2,2)}")
 
 # Final weight matricies
