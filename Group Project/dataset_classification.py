@@ -1,5 +1,5 @@
 # ================================================================
-#  GENERALIZED HEALTH DATA PIPELINE (FIXED VERSION)
+#  GENERALIZED HEALTH DATA PIPELINE
 # ================================================================
 
 import os
