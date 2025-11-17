@@ -225,7 +225,7 @@ def expand_normalized_rules(records):
     return pd.concat([records.drop(columns=['Normalized_Rule_Weights']), rule_features], axis=1)
 
 # Neural Network Classification
-def train_nn(expanded_df, model_name="diabetes_nn_model.keras", target_column="diagnosed_diabetes_Yes", loss="binary_crossentropy", activation="sigmoid", epochs=20, batch_size=32):
+def train_nn(expanded_df, model_name="diabetes_nn_model.keras", target_column="diagnosed_diabetes", loss="binary_crossentropy", activation="sigmoid", epochs=20, batch_size=32):
     y = expanded_df[target_column].astype(int)
     X = expanded_df.drop(columns=[col for col in expanded_df.columns if target_column in col])
 
@@ -274,7 +274,7 @@ if __name__ == "__main__":
                 # Option 2: Reuse saved CSV
                 expanded_df = pd.read_csv("rule_enhanced_dataset.csv")
             
-            choice = input("Please select from the following options otherwise press enter:\n\n1. Load a pre-trained model\n2. Train a new model\n\nEnter Selection: ")
+            choice = input("Please select from the following options otherwise press enter:\n\n1. Load a pre-trained model\n2. Train a new model\n3. Run Standard Tests on Dataset\n\nEnter Selection: ")
             
             match choice:
                 case "1":
@@ -313,7 +313,7 @@ if __name__ == "__main__":
                     model = train_nn(
                         expanded_df=baseline_df,
                         model_name="baseline_rule_augmented.keras",
-                        target_column="diagnosed_diabetes_Yes",
+                        target_column="diagnosed_diabetes",
                         loss="binary_crossentropy",
                         activation="sigmoid",
                         epochs=20
@@ -322,11 +322,11 @@ if __name__ == "__main__":
                     # === 2. Rule Risk Score (Rule Weights + Risk Score only) ===
                     print("\n==> Training: Rule Risk Score Only")
                     rule_risk_cols = [c for c in expanded_df.columns if c.startswith("Rule_") or c == "Rule_Risk_Score"]
-                    rule_risk_df = expanded_df[rule_risk_cols + ["diagnosed_diabetes_Yes"]]
+                    rule_risk_df = expanded_df[rule_risk_cols + ["diagnosed_diabetes"]]
                     model = train_nn(
                         expanded_df=rule_risk_df,
                         model_name="baseline_rule_risk_only.keras",
-                        target_column="diagnosed_diabetes_Yes",
+                        target_column="diagnosed_diabetes",
                         loss="binary_crossentropy",
                         activation="sigmoid",
                         epochs=20
@@ -335,11 +335,11 @@ if __name__ == "__main__":
                     # === 3. Normalized Rule Weights Only ===
                     print("\n==> Training: Normalized Rule Weights Only")
                     rule_only_cols = [c for c in expanded_df.columns if c.startswith("Rule_")]
-                    rule_only_df = expanded_df[rule_only_cols + ["diagnosed_diabetes_Yes"]]
+                    rule_only_df = expanded_df[rule_only_cols + ["diagnosed_diabetes"]]
                     model = train_nn(
                         expanded_df=rule_only_df,
                         model_name="baseline_rule_weights_only.keras",
-                        target_column="diagnosed_diabetes_Yes",
+                        target_column="diagnosed_diabetes",
                         loss="binary_crossentropy",
                         activation="sigmoid",
                         epochs=20
